@@ -9,9 +9,7 @@ const accountsReducer = (state = DEFAULT_ACCOUNTS, action) => {
     let acctId = '';
     switch(action.type){
         case ACCOUNTS.LOAD:
-
             state.accounts = ls.get('accounts') || [];
-            //const {accounts} = action;
             return {...state};
 
         case ACCOUNTS.SAVE:

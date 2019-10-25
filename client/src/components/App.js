@@ -3,33 +3,16 @@ import { connect } from 'react-redux';
 import { loadAccounts, saveAccounts } from '../actions/accounts';
 import { Link } from 'react-router-dom';
 
-//import AccountService from '../data/AccountService';
-
 import './account.css'
 
 class App extends Component {
-    //state = {accts: []};
 
     componentDidMount() {
         this.props.loadAccounts();
-
-        /*
-        let accountService = new AccountService();
-        this.setState({accts:accountService.accounts});
-        */
     }
 
     render(){
         const {accounts} = this.props.accounts;
-
-        //console.log("len:", accounts.length);
-        /*
-        const addStyle = {
-            display: 'inline-block',
-            margin: 10,
-            marginLeft: 0
-        };
-        */
 
         return  (
             <div>

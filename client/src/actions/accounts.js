@@ -1,5 +1,4 @@
 import { ACCOUNTS } from './types';
-import ls from 'local-storage';
 import uuid from 'uuid/v4';
 
 export const addAccountRow = (id) => {
