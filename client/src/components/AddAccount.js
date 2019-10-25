@@ -1,28 +1,30 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import {addAccountRow, updateRow, selectAccountType} from '../actions/addAccount';
+import {addAccount, addAccountRow, updateRow, selectAccountType, saveAccounts} from '../actions/accounts';
 import './account.css';
-import ls from 'local-storage';
 
 class AddAccount extends Component {
 
+    componentDidMount() {
+        this.props.addAccount();
+    }
+
     saveAccount = () => {
-        
+        this.props.saveAccounts();
     }
 
     discard = () => {
         
     }
 
-    updateHoldingsField = (evt, id, fieldName) => {
+    updateHoldingsField = (evt, acctId, id, fieldName) => {
         let fieldValue = evt.target.value;
-        this.props.updateRow(id, fieldName, fieldValue)();
+        this.props.updateRow(acctId, id, fieldName, fieldValue)();
     }
  
-    render(){
-
-        //const {id, acctType, holdings, addAccountRow, selectAccountType} = this.props;
-        const {holdings, addAccountRow, selectAccountType, updateRow} = this.props;
+    render() {
+        const {id, holdings, addAccountRow, selectAccountType, updateRow, saveAccounts} = this.props;
+        let acctId = id;
         return  (
             <div>
                 <div className='acct' id='acct-type'>
@@ -34,7 +36,7 @@ class AddAccount extends Component {
                         <option value='coinbase'>CoinBase</option>
                     </select>
 
-                    <button onClick={this.saveAccount}>SAVE</button>
+                    <button onClick={saveAccounts()}>SAVE</button>
                     <button onClick={this.discard}>CANCEL</button>
                 </div> 
                 <hr/>
@@ -83,29 +85,28 @@ class AddAccount extends Component {
                         <h2>DATE</h2>
                     </div>
                 </div>
-
                 {
-                    this.props.holdings.map((holding) => {
+                    holdings.map((holding) => {
                         const { id, symbol, shares, cost, buyCommission, sellCommission, date } = holding;
                         return (
                             <div key={id} className='row acct'>
                                 <div className="col-2">
-                                    <input onChange={(e) => this.updateHoldingsField(e, id, 'SYMBOL')} defaultValue = {symbol} type='text'></input>
+                                    <input onChange={(e) => this.updateHoldingsField(e, acctId, id, 'SYMBOL')} defaultValue = {symbol} type='text'></input>
                                 </div>
                                 <div className="col-2">
-                                    <input onChange={(e) => this.updateHoldingsField(e, id, 'SHARES')} defaultValue = {shares} type='number'></input>
+                                    <input onChange={(e) => this.updateHoldingsField(e, acctId, id, 'SHARES')} defaultValue = {shares} type='number'></input>
                                 </div>
                                 <div className="col-2">
-                                    <input onChange={(e) => this.updateHoldingsField(e, id, 'COST')} defaultValue = {cost} type='number'></input>
+                                    <input onChange={(e) => this.updateHoldingsField(e, acctId, id, 'COST')} defaultValue = {cost} type='number'></input>
                                 </div>
                                 <div className="col-2">
-                                    <input onChange={(e) => this.updateHoldingsField(e, id, 'BUYCOMM')} defaultValue = {buyCommission} type='number'></input>
+                                    <input onChange={(e) => this.updateHoldingsField(e, acctId, id, 'BUYCOMM')} defaultValue = {buyCommission} type='number'></input>
                                 </div>
                                 <div className="col-2">
-                                    <input onChange={(e) => this.updateHoldingsField(e, id, 'SELLCOMM')} defaultValue = {sellCommission} type='number'></input>
+                                    <input onChange={(e) => this.updateHoldingsField(e, acctId, id, 'SELLCOMM')} defaultValue = {sellCommission} type='number'></input>
                                 </div>
                                 <div className="col-2">
-                                    <input onChange={(e) => this.updateHoldingsField(e, id, 'DATE')} defaultValue = {date} type='date'></input>  
+                                    <input onChange={(e) => this.updateHoldingsField(e, acctId, id, 'DATE')} defaultValue = {date} type='date'></input>  
                                 </div>              
                             </div>
                         )
@@ -113,7 +114,7 @@ class AddAccount extends Component {
                 }
                 <div className="row">
                     <div className="col-12">
-                        <button onClick={addAccountRow()}>Add</button>
+                        <button onClick={addAccountRow(id)}>Add</button>
                     </div>
                 </div>
                 
@@ -124,15 +125,23 @@ class AddAccount extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addAccountRow: () => () => dispatch(addAccountRow()),
+        addAccount: () => dispatch(addAccount()),
+        addAccountRow: (acctId) => () => dispatch(addAccountRow(acctId)),
         selectAccountType: (acctType) => () => dispatch(selectAccountType(acctType)),
-        updateRow: (id, fieldName, fieldValue) => () => dispatch(updateRow(id, fieldName, fieldValue))
+        saveAccounts: () => () => dispatch(saveAccounts()),
+        updateRow: (acctId, id, fieldName, fieldValue) => () => dispatch(updateRow(acctId, id, fieldName, fieldValue))
     }
 };
 
 const mapStateToProps = (state) => {
-    const { id, acctType, holdings } = state.addAccount;
-    return { id: id, acctType:acctType, holdings: holdings };
+    const {accounts} = state;
+    if (!accounts || !accounts.accounts || accounts.accounts.length === 0) {
+        return { id: '', acctType:'manual', holdings: [] };
+    } else {
+        let newAccount = accounts.accounts[accounts.accounts.length-1];
+        const { id, acctType, holdings } = newAccount;
+        return { id: id, acctType:acctType, holdings: holdings };
+    }
 }
 
 const componentConnector = connect(mapStateToProps, mapDispatchToProps);

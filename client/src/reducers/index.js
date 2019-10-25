@@ -4,7 +4,7 @@ import accountsReducer from './accounts';
 //import accountRowReducer from './accountRow';
 
 export default combineReducers({
-    addAccount: addAccountReducer,
+    //addAccount: addAccountReducer,
     accounts: accountsReducer
     //accountRow: accountRowReducer
 });
