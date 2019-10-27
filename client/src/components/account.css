@@ -56,7 +56,6 @@
     display: inline-block; 
 }
 
-
 .rowParent {
     padding: 5;
 };
@@ -71,5 +70,4 @@
     display: 'inline-block';
     margin: 10;
     width: 150;
-    color: red
 };

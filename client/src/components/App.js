@@ -8,21 +8,18 @@ const API_URL = 'https://financialmodelingprep.com/api/v3/company/profile/';
 
 const rowStyle = {
     display: 'inline-block',
-    margin: 10,
-    width: 150
+    margin: 10
 };
 
 const rowProfit = {
     display: 'inline-block',
     margin: 10,
-    width: 150,
     color: 'yellowgreen'
 };
 
 const rowLoss = {
     display: 'inline-block',
     margin: 10,
-    width: 150,
     color: 'red'
 };
 
@@ -153,7 +150,7 @@ class App extends Component {
                                                 <h2>Profit (%)</h2>
                                             </div>
                                             <div className='col-1'>
-                                                <h2>Commission</h2>
+                                                <h2>Comm.</h2>
                                             </div>
                                         </div>
                                         <div className='row'>
