@@ -7,8 +7,8 @@ export const addAccountRow = (id) => {
             symbol: '',
             shares: 0.0,
             cost: 0.0,
-            buyCommission: 0.0,
-            sellCommission: 0.0,
+            buyComm: 0.0,
+            sellComm: 0.0,
             date: ''
     };
 
@@ -19,8 +19,12 @@ export const updateRow = (acctId, id, fieldName, fieldValue) => {
     return {type:ACCOUNTS.UPDATE_ROW, acctId:acctId, id:id, fieldName:fieldName, fieldValue:fieldValue};
 }
 
-export const selectAccountType = (acctType) => {
-    return {type:ACCOUNTS.SELECT_ACCT_TYPE, acctType:acctType};
+export const selectAccountType = (acctId, acctType) => {
+    return {type:ACCOUNTS.SELECT_ACCT_TYPE, acctId:acctId, acctType:acctType};
+}
+
+export const setPortfolioName = (acctId, name) => {
+    return {type:ACCOUNTS.SET_PORTFOLIO_NAME, acctId:acctId, name:name};
 }
 
 export const addAccount = () => {

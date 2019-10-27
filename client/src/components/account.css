@@ -1,3 +1,4 @@
+
 * {
     box-sizing: border-box;
   }
@@ -54,3 +55,21 @@
 #portfolio-holdings-manual button {
     display: inline-block; 
 }
+
+
+.rowParent {
+    padding: 5;
+};
+
+.rowStyle {
+    display: 'inline-block';
+    margin: 10;
+    width: 150;
+};
+
+.rowHeader {
+    display: 'inline-block';
+    margin: 10;
+    width: 150;
+    color: red
+};

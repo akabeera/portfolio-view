@@ -68,8 +68,34 @@ const accountsReducer = (state = DEFAULT_ACCOUNTS, action) => {
             return {...state};
             
         case ACCOUNTS.SELECT_ACCT_TYPE:
-            ({acctType} = action.acctType);
-            return {...state, acctType}
+
+            acctId = action.acctId; 
+            let acctType = action.acctType;
+
+            for(let i = 0; i < state.accounts.length; ++i){
+                let curr = state.accounts[i];
+                if (curr.id !== acctId) {
+                    continue;
+                }
+                curr.acctType = acctType;
+                break;
+            }
+            return {...state};
+
+        case ACCOUNTS.SET_PORTFOLIO_NAME:
+
+            acctId = action.acctId; 
+            let name = action.name;
+
+            for(let i = 0; i < state.accounts.length; ++i){
+                let curr = state.accounts[i];
+                if (curr.id !== acctId) {
+                    continue;
+                }
+                curr.name = name;
+                break;
+            }
+            return {...state};
         default:
             return state;
     }

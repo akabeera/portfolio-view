@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import {addAccount, addAccountRow, updateRow, selectAccountType, saveAccounts} from '../actions/accounts';
+import {addAccount, addAccountRow, updateRow, selectAccountType, setPortfolioName, saveAccounts} from '../actions/accounts';
 import './account.css';
 
 class AddAccount extends Component {
@@ -21,15 +21,25 @@ class AddAccount extends Component {
         let fieldValue = evt.target.value;
         this.props.updateRow(acctId, id, fieldName, fieldValue)();
     }
+
+    selectAccountType = (evt, acctId) => {
+        let acctType = evt.target.value;
+        this.props.selectAccountType(acctId, acctType)();
+    }
+
+    setPortfolioName = (evt, acctId) => {
+        let name = evt.target.value;
+        this.props.setPortfolioName(acctId, name)();
+    }
  
     render() {
-        const {id, holdings, addAccountRow, selectAccountType, updateRow, saveAccounts} = this.props;
+        const {id, holdings, addAccountRow, saveAccounts} = this.props;
         let acctId = id;
         return  (
             <div>
                 <div className='acct' id='acct-type'>
                     TYPE
-                    <select onChange={selectAccountType}>
+                    <select onChange={(e) => this.selectAccountType(e, acctId)}>
                         <option value='select'>Select</option>
                         <option value='manual'>Manual</option>
                         <option value='etrade'>eTrade</option>
@@ -48,7 +58,7 @@ class AddAccount extends Component {
                 
                 <div className="row">
                     <div id='portfolio-name' className="col-12 acct">
-                        <input placeholder="ENTER PORTFOLIO NAME"></input>
+                        <input onChange={(e) => this.setPortfolioName(e, acctId)} placeholder="ENTER PORTFOLIO NAME"></input>
                     </div>
                 </div>
 
@@ -127,9 +137,10 @@ const mapDispatchToProps = (dispatch) => {
     return {
         addAccount: () => dispatch(addAccount()),
         addAccountRow: (acctId) => () => dispatch(addAccountRow(acctId)),
-        selectAccountType: (acctType) => () => dispatch(selectAccountType(acctType)),
+        selectAccountType: (acctId, acctType) => () => dispatch(selectAccountType(acctId, acctType)),
         saveAccounts: () => () => dispatch(saveAccounts()),
-        updateRow: (acctId, id, fieldName, fieldValue) => () => dispatch(updateRow(acctId, id, fieldName, fieldValue))
+        updateRow: (acctId, id, fieldName, fieldValue) => () => dispatch(updateRow(acctId, id, fieldName, fieldValue)),
+        setPortfolioName: (acctId, name) => () => dispatch(setPortfolioName(acctId, name))
     }
 };
 
